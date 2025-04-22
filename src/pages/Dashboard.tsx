@@ -1,6 +1,4 @@
-
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import { RoleToggle } from "@/components/ui/RoleToggle";
 import { useUser } from "@/context/UserContext";
 import { Card } from "@/components/ui/card";
 
@@ -9,14 +7,11 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">
-            Welcome to TaskMate AI - Your AI-powered productivity platform
-          </p>
-        </div>
-        <RoleToggle />
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-muted-foreground mt-1">
+          Welcome to TaskMate AI - Your AI-powered productivity platform
+        </p>
       </div>
 
       {role === "manager" ? <ManagerDashboard /> : <EmployeeDashboard />}

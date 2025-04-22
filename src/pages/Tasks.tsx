@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
@@ -13,7 +12,7 @@ export default function Tasks() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold tracking-tight">Task Management</h1>
         <p className="text-muted-foreground mt-1">
-          Create, assign, and track tasks efficiently
+          {role === "manager" ? "Create, assign, and track tasks efficiently" : "View and track your assigned tasks"}
         </p>
       </div>
 
@@ -40,9 +39,11 @@ export default function Tasks() {
             List View
           </button>
         </div>
-        <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
-          + Create New Task
-        </button>
+        {role === "manager" && (
+          <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+            + Create New Task
+          </button>
+        )}
       </div>
 
       {viewMode === "kanban" ? <KanbanView /> : <ListView />}
@@ -51,6 +52,7 @@ export default function Tasks() {
 }
 
 function KanbanView() {
+  const { role } = useUser();
   const columns = [
     { id: "todo", title: "To Do", count: 5 },
     { id: "inprogress", title: "In Progress", count: 3 },
@@ -69,7 +71,7 @@ function KanbanView() {
                 ({column.count})
               </span>
             </h3>
-            {column.id === "todo" && (
+            {role === "manager" && column.id === "todo" && (
               <button className="text-xs text-primary">+ Add</button>
             )}
           </div>
@@ -230,26 +232,28 @@ function KanbanView() {
               </>
             )}
 
-            <div className="border border-dashed rounded-md p-4 flex items-center justify-center">
-              <button className="text-sm text-muted-foreground flex items-center gap-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 8v8" />
-                  <path d="M8 12h8" />
-                </svg>
-                Add Task
-              </button>
-            </div>
+            {role === "manager" && (
+              <div className="border border-dashed rounded-md p-4 flex items-center justify-center">
+                <button className="text-sm text-muted-foreground flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v8" />
+                    <path d="M8 12h8" />
+                  </svg>
+                  Add Task
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ))}

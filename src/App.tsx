@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,7 @@ import Notifications from "./pages/Notifications";
 import Analytics from "./pages/Analytics";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Chat from "./pages/Chat";
 
 const queryClient = new QueryClient();
 
@@ -101,6 +101,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={["manager", "employee"]}>
             <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/chat"
+        element={
+          <ProtectedRoute allowedRoles={["manager", "employee"]}>
+            <Chat />
           </ProtectedRoute>
         }
       />
