@@ -12,7 +12,12 @@
   body {
     @apply bg-background text-foreground font-sans text-base leading-relaxed;
   }
-  h1, .text-3xl {
+  h1 {
+    @apply font-extrabold text-3xl sm:text-4xl;
+    letter-spacing: -0.01em;
+  }
+  /* Create a separate style for .text-3xl without referencing itself */
+  .heading-xl {
     @apply font-extrabold text-3xl sm:text-4xl;
     letter-spacing: -0.01em;
   }
