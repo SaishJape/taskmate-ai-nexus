@@ -2,27 +2,45 @@ import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
+import { TaskCreateModal } from "@/components/task/TaskCreateModal";
 
 export default function Tasks() {
   const [viewMode, setViewMode] = useState<"kanban" | "list">("kanban");
   const { role } = useUser();
+  const [showModal, setShowModal] = useState(false);
+
+  const [tasks, setTasks] = useState<any[]>([]);
+
+  function handleCreateTask(newTask: { title: string; priority: string; due: string }) {
+    setTasks((prev) => [
+      {
+        ...newTask,
+        id: Math.random().toString(36).slice(2),
+        status: "todo",
+        assignee: "John Doe",
+        avatar: "https://ui-avatars.com/api/?name=John+Doe&background=0D8ABC&color=fff"
+      },
+      ...prev,
+    ]);
+  }
 
   return (
     <DashboardLayout>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold tracking-tight">Task Management</h1>
-        <p className="text-muted-foreground mt-1">
-          {role === "manager" ? "Create, assign, and track tasks efficiently" : "View and track your assigned tasks"}
+        <h1 className="text-3xl font-extrabold tracking-tight text-primary font-sans">Task Management</h1>
+        <p className="text-muted-foreground mt-1 text-lg">
+          {role === "manager"
+            ? "Create, assign, and track tasks efficiently"
+            : "View and complete your assigned tasks"}
         </p>
       </div>
-
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
         <div className="flex gap-2">
           <button
             onClick={() => setViewMode("kanban")}
-            className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+            className={`px-3 py-2 text-base rounded-xl font-semibold transition-colors ${
               viewMode === "kanban"
-                ? "bg-primary text-white"
+                ? "bg-primary text-white shadow"
                 : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
             }`}
           >
@@ -30,9 +48,9 @@ export default function Tasks() {
           </button>
           <button
             onClick={() => setViewMode("list")}
-            className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+            className={`px-3 py-2 text-base rounded-xl font-semibold transition-colors ${
               viewMode === "list"
-                ? "bg-primary text-white"
+                ? "bg-primary text-white shadow"
                 : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
             }`}
           >
@@ -40,12 +58,21 @@ export default function Tasks() {
           </button>
         </div>
         {role === "manager" && (
-          <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
-            + Create New Task
-          </button>
+          <>
+            <button
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 font-bold text-white rounded-xl transition-all shadow flex items-center gap-2 text-lg"
+              onClick={() => setShowModal(true)}
+            >
+              <span className="text-xl">+</span> Create New Task
+            </button>
+            <TaskCreateModal
+              open={showModal}
+              onOpenChange={setShowModal}
+              onCreate={handleCreateTask}
+            />
+          </>
         )}
       </div>
-
       {viewMode === "kanban" ? <KanbanView /> : <ListView />}
     </DashboardLayout>
   );
