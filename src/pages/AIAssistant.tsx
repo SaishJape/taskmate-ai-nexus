@@ -8,7 +8,7 @@ export default function AIAssistant() {
   const [conversation, setConversation] = useState([
     {
       role: "assistant",
-      content: "Hello! I'm your TaskMate AI assistant. How can I help you today?",
+      content: "Hello! I'm Jagdish your TaskMate AI assistant. How can I help you today?",
     },
   ]);
 
